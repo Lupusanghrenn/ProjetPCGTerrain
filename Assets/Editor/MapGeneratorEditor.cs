@@ -14,13 +14,13 @@ public class MapGeneratorEditor : Editor
         {
             if (mapGenerator.autoUpdate)
             {
-                mapGenerator.generateMap();
+                mapGenerator.generateMap2D();
             }
         }
 
         if (GUILayout.Button("Generate"))
         {
-            mapGenerator.generateMap();
+            mapGenerator.generateMap2D();
         }
     }
 }

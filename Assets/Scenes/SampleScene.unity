@@ -193,7 +193,8 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0.0390625, y: 0.1015625, z: 0.02734375, w: -0.03125}
+  m_BoundingSphereOverride: {x: -2.6253357e-31, y: -0.0003786396, z: 1.7607954e-38,
+    w: 2.86e-43}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -326,12 +327,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mapWidth: 100
   mapHeight: 100
-  mapScale: 27
+  mapDeep: 100
+  mapScale: 8.4
   octaves: 4
-  persistance: 0.1
-  lacunarity: 2
+  persistance: 0.5
+  lacunarity: 2.5
   seed: 21
-  offset: {x: -0.14, y: 0.5}
+  offset: {x: 0.93, y: 0.21, z: 0}
   autoUpdate: 1
 --- !u!4 &1065671811
 Transform:

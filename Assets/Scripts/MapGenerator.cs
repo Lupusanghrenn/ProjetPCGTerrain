@@ -6,6 +6,7 @@ public class MapGenerator : MonoBehaviour
 {
     public int mapWidth;
     public int mapHeight;
+    public int mapDeep;
     public float mapScale;
 
     public int octaves;
@@ -14,7 +15,7 @@ public class MapGenerator : MonoBehaviour
     public float lacunarity;
 
     public int seed;
-    public Vector2 offset;
+    public Vector3 offset;
 
     public bool autoUpdate;
 
@@ -30,12 +31,20 @@ public class MapGenerator : MonoBehaviour
         
     }
 
-    public void generateMap()
+    public void generateMap2D()
     {
-        float[,] map =Noise.generateNoiseMap(mapWidth, mapHeight,seed, mapScale,octaves,persistance,lacunarity,offset);
+        float[,] map =Noise.GenerateNoiseMap2D(mapWidth, mapHeight,seed, mapScale,octaves,persistance,lacunarity,new Vector2(offset.x,offset.y));
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
         display.drawNoiseMap(map);
+    }
+
+    public void generateMap3D()
+    {
+        float[,,] map = Noise.GenerateNoiseMap3D(mapWidth, mapHeight, mapDeep, seed, mapScale, octaves, persistance, lacunarity, offset);
+
+        MapDisplay display = FindObjectOfType<MapDisplay>();
+        //display.drawNoiseMap(map);
     }
 
     public void OnValidate()
