@@ -65,7 +65,6 @@ public class MapDisplay : MonoBehaviour
                 {
                     //texture.SetPixel(x, y, new Color(map[x, y], map[x, y], map[x, y]));
                     GameObject go = Instantiate(prefab, currentPos, Quaternion.identity, spheres.transform);
-                    Debug.Log(map[x, y, z]);
                     Material mat = new Material(matPrefab);
                     mat.color= Color.Lerp(Color.black, Color.white, map[x, y, z]);
                     go.GetComponent<MeshRenderer>().sharedMaterial = mat;
