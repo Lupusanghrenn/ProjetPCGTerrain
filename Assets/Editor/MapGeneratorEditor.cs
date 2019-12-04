@@ -22,5 +22,10 @@ public class MapGeneratorEditor : Editor
         {
             mapGenerator.generateMap2D();
         }
+
+        if (GUILayout.Button("Generate3D"))
+        {
+            mapGenerator.generateMap3D();
+        }
     }
 }

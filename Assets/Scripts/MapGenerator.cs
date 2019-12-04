@@ -44,7 +44,7 @@ public class MapGenerator : MonoBehaviour
         float[,,] map = Noise.GenerateNoiseMap3D(mapWidth, mapHeight, mapDeep, seed, mapScale, octaves, persistance, lacunarity, offset);
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
-        //display.drawNoiseMap(map);
+        display.drawNoiseMap3D(map);
     }
 
     public void OnValidate()
