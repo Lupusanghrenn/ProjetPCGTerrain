@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
+    [Header("MapSettings")]
     public int mapWidth;
     public int mapHeight;
     public int mapDeep;
     public float mapScale;
+    [Range(0.0f,1.0f)]
+    public float seuil;
 
+    [Header("Perlin Noise Settings")]
     public int octaves;
     [Range(0f,1f)]
     public float persistance;
@@ -44,7 +48,7 @@ public class MapGenerator : MonoBehaviour
         float[,,] map = Noise.GenerateNoiseMap3D(mapWidth, mapHeight, mapDeep, seed, mapScale, octaves, persistance, lacunarity, offset);
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
-        MarchingCube mc = FindObjectOfType<MarchingCube>();
+        MarchingCube mc = GetComponent<MarchingCube>();
         mc.setMap(map);
         display.drawNoiseMap3D(map);
     }
