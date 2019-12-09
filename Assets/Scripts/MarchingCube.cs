@@ -293,8 +293,8 @@ public class MarchingCube : MonoBehaviour
         7
     };
 
-    public int height;
     public int width;
+    public int height;
     public int deep;
     public static float[,,] map;
     Vector3[,,] posSpheres;
@@ -401,10 +401,6 @@ public class MarchingCube : MonoBehaviour
                             listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
                             listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
                             listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
-
-                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
 
                         }
                     }

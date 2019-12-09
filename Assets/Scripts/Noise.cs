@@ -98,9 +98,9 @@ public static class Noise
         float halfWidth = mapWidth / 2f;
         float halfDeep = mapDeep / 2f;
 
-        for (int y = 0; y < mapHeight; y++)
+        for (int x = 0; x < mapWidth; x++)
         {
-            for (int x = 0; x < mapWidth; x++)
+            for (int y = 0; y < mapHeight; y++)
             {
                 for (int z = 0; z < mapDeep; z++)
                 {
@@ -120,7 +120,7 @@ public static class Noise
                         amplitude *= persistance;
                         frequency *= lacunarity;
                     }
-                    noiseMap[y, x, z] = noiseHeight;
+                    noiseMap[x, y, z] = noiseHeight;
 
                     if (noiseHeight > maxNoiseHeight)
                     {
@@ -135,13 +135,13 @@ public static class Noise
             }
         }
 
-        for (int y = 0; y < mapHeight; y++)
+        for (int x = 0; x < mapWidth; x++)
         {
-            for (int x = 0; x < mapWidth; x++)
+            for (int y = 0; y < mapHeight; y++)
             {
-                for (int z = 0; z < mapWidth; z++)
+                for (int z = 0; z < mapDeep; z++)
                 {
-                    noiseMap[y, x, z] = Mathf.InverseLerp(minNouseHeight, maxNoiseHeight, noiseMap[y, x, z]);
+                    noiseMap[x, y, z] = Mathf.InverseLerp(minNouseHeight, maxNoiseHeight, noiseMap[x, y, z]);
                 }
             }
         }
