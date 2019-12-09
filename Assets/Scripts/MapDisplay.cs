@@ -32,7 +32,7 @@ public class MapDisplay : MonoBehaviour
         textureRenderer.transform.localScale = new Vector3(width, 1, height);
     }
 
-    public void drawNoiseMap3D(Vector3[,,] map, float [,,] noiseMap)
+    public void drawNoiseMap3D(Vector3[,,] map, float [,,] noiseMap, float seuil)
     {
         int width = map.GetLength(0);
         int height = map.GetLength(1);
@@ -54,16 +54,23 @@ public class MapDisplay : MonoBehaviour
         Debug.Log("sphere");*/
 
 
-        for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
             {
                 for (int z = 0; z < deep; z++)
                 {
                     //texture.SetPixel(x, y, new Color(map[x, y], map[x, y], map[x, y]));
-                    GameObject go = Instantiate(prefab, map[x,y,z], Quaternion.identity, spheres.transform);
+                    GameObject go = Instantiate(prefab, map[x, y, z], Quaternion.identity, spheres.transform);
                     Material mat = new Material(matPrefab);
-                    mat.color= Color.Lerp(Color.black, Color.white, noiseMap[x, y, z]);
+                    if (noiseMap[x,y,z] < seuil)
+                    {
+                        mat.color = Color.Lerp(Color.black, Color.white, noiseMap[x, y, z]);
+                    }
+                    else
+                    {
+                        mat.color = Color.red;
+                    }
                     go.GetComponent<MeshRenderer>().sharedMaterial = mat;
                 }
             }
@@ -88,9 +95,9 @@ public class MapDisplay : MonoBehaviour
         Vector3[,,] positions = new Vector3[width, height, deep];
 
 
-        for (int y = 0; y < height; y++)
+        for (int x = 0; x < width; x++)
         {
-            for (int x = 0; x < width; x++)
+            for (int y = 0; y < height; y++)
             {
                 currentPos = initPos;
                 currentPos += cubeTransform.right * x;

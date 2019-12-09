@@ -311,6 +311,9 @@ public class MarchingCube : MonoBehaviour
     public void setMap(float[,,] map2)
     {
         map = map2;
+        width = map.GetLength(0);
+        height = map.GetLength(1);
+        deep = map.GetLength(2);
         posSpheres = GetComponent<MapDisplay>().generatePositions3D(map);
         // debugMap();
     }
@@ -336,6 +339,9 @@ public class MarchingCube : MonoBehaviour
     public void debugCubes(float seuil)
     {
         listVertices.Clear();
+        Debug.Log(seuil);
+
+
 
         for (int i = 0; i < width - 1; i++)
         {
@@ -356,25 +362,18 @@ public class MarchingCube : MonoBehaviour
                     };
 
                     int cubeIndex = 0;
-
-                    for (int l = 0; l < 2; l++)
-                    {
-                        for (int m = 0; m < 2; m++)
-                        {
-                            for (int n = 0; n < 2; n++)
-                            {
-                                if(map[i + l, j + m, k + n] < seuil)
-                                {
-                                    cubeIndex |= (int)Mathf.Pow(2, l + m * 2 + n * 4);
-                                }
-                                // Debug.Log(map[i + l, j + m, k + n]);
-                            } 
-                        } 
-                    }
+                    if (map[i, j, k] < seuil) cubeIndex |= 1;
+                    if (map[i+1, j, k] < seuil) cubeIndex |= 2;
+                    if (map[i+1, j, k+1] < seuil) cubeIndex |= 4;
+                    if (map[i, j, k+1] < seuil) cubeIndex |= 8;
+                    if (map[i, j+1, k] < seuil) cubeIndex |= 16;
+                    if (map[i+1, j+1, k] < seuil) cubeIndex |= 32;
+                    if (map[i+1, j+1, k+1] < seuil) cubeIndex |= 64;
+                    if (map[i, j+1, k+1] < seuil) cubeIndex |= 128;
 
                     Debug.Log(cubeIndex);
 
-                    if (cubeIndex != 0)
+                    if (cubeIndex != 0 && cubeIndex!=255)
                     {
                         for (int l = 0; triTable[cubeIndex, l] != -1; l += 3)
                         {
@@ -390,11 +389,15 @@ public class MarchingCube : MonoBehaviour
                             listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0]));
                             listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1]));
                             listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2]));
+
+                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0]));
+                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2]));
+                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1]));
+                            
                         }
                     }
 
-
-                    /*
+                    /*"(-4.5, -4.5, 144.5)" 9 4 5
                     Debug.Log(map[i, j, k]);
                     Debug.Log(map[i + 1, j, k]);
                     Debug.Log(map[i, j + 1, k]);
