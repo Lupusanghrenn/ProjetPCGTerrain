@@ -32,7 +32,7 @@ public class MapDisplay : MonoBehaviour
         textureRenderer.transform.localScale = new Vector3(width, 1, height);
     }
 
-    public void drawNoiseMap3D(float[,,] map)
+    public void drawNoiseMap3D(Vector3[,,] map, float [,,] noiseMap)
     {
         int width = map.GetLength(0);
         int height = map.GetLength(1);
@@ -46,29 +46,25 @@ public class MapDisplay : MonoBehaviour
         {
             DestroyImmediate(spheres.transform.GetChild(0).gameObject);
         }
-        Vector3 initPos = (cubeTransform.position - cubeTransform.forward * deep / 2) - cubeTransform.right * width / 2 - cubeTransform.up * height / 2;
+        /*Vector3 initPos = (cubeTransform.position - cubeTransform.forward * deep / 2) - cubeTransform.right * width / 2 - cubeTransform.up * height / 2;
         initPos += cubeTransform.right / 2;
         initPos += cubeTransform.forward / 2;
         initPos += cubeTransform.up / 2;
         Vector3 currentPos = initPos;
-        Debug.Log("sphere");
+        Debug.Log("sphere");*/
 
 
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
             {
-                currentPos = initPos;
-                currentPos += cubeTransform.right * x;
-                currentPos += cubeTransform.up * y;
                 for (int z = 0; z < deep; z++)
                 {
                     //texture.SetPixel(x, y, new Color(map[x, y], map[x, y], map[x, y]));
-                    GameObject go = Instantiate(prefab, currentPos, Quaternion.identity, spheres.transform);
+                    GameObject go = Instantiate(prefab, map[x,y,z], Quaternion.identity, spheres.transform);
                     Material mat = new Material(matPrefab);
-                    mat.color= Color.Lerp(Color.black, Color.white, map[x, y, z]);
+                    mat.color= Color.Lerp(Color.black, Color.white, noiseMap[x, y, z]);
                     go.GetComponent<MeshRenderer>().sharedMaterial = mat;
-                    currentPos += cubeTransform.forward;
                 }
             }
         }

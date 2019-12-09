@@ -50,7 +50,8 @@ public class MapGenerator : MonoBehaviour
         MapDisplay display = FindObjectOfType<MapDisplay>();
         MarchingCube mc = GetComponent<MarchingCube>();
         mc.setMap(map);
-        display.drawNoiseMap3D(map);
+        Vector3[,,] pos = display.generatePositions3D(map);
+        display.drawNoiseMap3D(pos,map);
     }
 
     public void OnValidate()
