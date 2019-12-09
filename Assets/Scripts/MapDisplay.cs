@@ -79,6 +79,12 @@ public class MapDisplay : MonoBehaviour
 
     public Vector3[,,] generatePositions3D(float[,,] map)
     {
+        int childs = spheres.transform.childCount;
+        for (var i = 0; i < childs; i++)
+        {
+            DestroyImmediate(spheres.transform.GetChild(0).gameObject);
+        }
+
         int width = map.GetLength(0);
         int height = map.GetLength(1);
         int deep = map.GetLength(2);

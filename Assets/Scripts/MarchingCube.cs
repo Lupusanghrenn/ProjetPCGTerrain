@@ -420,6 +420,7 @@ public class MarchingCube : MonoBehaviour
         }
 
         Mesh msh = new Mesh();
+        msh.name = "Marching cube";
         List<int> listTriangles = new List<int>();
 
         for (int i = 0; i < listVertices.Count; i++)
