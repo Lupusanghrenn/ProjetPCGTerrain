@@ -27,5 +27,10 @@ public class MapGeneratorEditor : Editor
         {
             mapGenerator.generateMap3D();
         }
+
+        if (GUILayout.Button("Marching cube"))
+        {
+            mapGenerator.updateMarchingCube();
+        }
     }
 }

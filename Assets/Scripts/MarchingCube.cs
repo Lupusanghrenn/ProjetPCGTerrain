@@ -263,12 +263,44 @@ public class MarchingCube : MonoBehaviour
         { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
     };
 
-    public static float[,,] map;
-
-    struct Cube
-    {
-        int [] idxSommetsCube;
+    int [] cornerIndexAFromEdge = {
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        0,
+        1,
+        2,
+        3
     };
+
+    int [] cornerIndexBFromEdge = {
+        1,
+        2,
+        3,
+        0,
+        5,
+        6,
+        7,
+        4,
+        4,
+        5,
+        6,
+        7
+    };
+
+    public int height;
+    public int width;
+    public int deep;
+    public static float[,,] map;
+    Vector3[,,] posSpheres;
+
+    List<Vector3> listVertices = new List<Vector3>();
+
 
     // Start is called before the first frame update
     void Start()
@@ -279,24 +311,124 @@ public class MarchingCube : MonoBehaviour
     public void setMap(float[,,] map2)
     {
         map = map2;
-        debugLog();
+        posSpheres = GetComponent<MapDisplay>().generatePositions3D(map);
+        // debugMap();
     }
 
-    public void debugLog()
+    public void debugMap()
     {
-        int indexMax = (int)(Mathf.Pow(map.Length, (1.0f / 3.0f)));
+        width = map.GetLength(0);
+        height = map.GetLength(1);
+        deep = map.GetLength(2);
 
-        for (int i = 0; i < indexMax; i++)
+        for (int i = 0; i < width; i++)
         {
-            for(int j = 0; j < indexMax; j++)
+            for(int j = 0; j < height; j++)
             {
-                for (int k = 0; k < indexMax; k++)
+                for (int k = 0; k < deep; k++)
                 {
                     Debug.Log(map[i, j, k]);
                 }
             }
         }
     }
+
+    public void debugCubes(float seuil)
+    {
+        listVertices.Clear();
+
+        for (int i = 0; i < width - 1; i++)
+        {
+            for (int j = 0; j < height - 1; j++)
+            {
+                for (int k = 0; k < deep - 1; k++)
+                {
+                    Vector3 [] cubeCorners = 
+                    {
+                        posSpheres[i, j, k],
+                        posSpheres[i+1, j, k],
+                        posSpheres[i+1, j, k+1],
+                        posSpheres[i, j, k+1],
+                        posSpheres[i, j+1, k],
+                        posSpheres[i+1, j+1, k],
+                        posSpheres[i+1, j+1, k+1],
+                        posSpheres[i, j+1, k+1]
+                    };
+
+                    int cubeIndex = 0;
+
+                    for (int l = 0; l < 2; l++)
+                    {
+                        for (int m = 0; m < 2; m++)
+                        {
+                            for (int n = 0; n < 2; n++)
+                            {
+                                if(map[i + l, j + m, k + n] < seuil)
+                                {
+                                    cubeIndex |= (int)Mathf.Pow(2, l + m * 2 + n * 4);
+                                }
+                                // Debug.Log(map[i + l, j + m, k + n]);
+                            } 
+                        } 
+                    }
+
+                    Debug.Log(cubeIndex);
+
+                    if (cubeIndex != 0)
+                    {
+                        for (int l = 0; triTable[cubeIndex, l] != -1; l += 3)
+                        {
+                            int a0 = cornerIndexAFromEdge[triTable[cubeIndex, l]];
+                            int b0 = cornerIndexBFromEdge[triTable[cubeIndex, l]];
+
+                            int a1 = cornerIndexAFromEdge[triTable[cubeIndex, l+1]];
+                            int b1 = cornerIndexBFromEdge[triTable[cubeIndex, l+1]];
+
+                            int a2 = cornerIndexAFromEdge[triTable[cubeIndex, l+2]];
+                            int b2 = cornerIndexBFromEdge[triTable[cubeIndex, l+2]];
+
+                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0]));
+                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1]));
+                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2]));
+                        }
+                    }
+
+
+                    /*
+                    Debug.Log(map[i, j, k]);
+                    Debug.Log(map[i + 1, j, k]);
+                    Debug.Log(map[i, j + 1, k]);
+                    Debug.Log(map[i, j, k + 1]);
+                    Debug.Log(map[i + 1, j + 1, k]);
+                    Debug.Log(map[i + 1, j, k + 1]);    
+                    Debug.Log(map[i, j + 1, k + 1]);
+                    Debug.Log(map[i + 1, j + 1, k + 1]);
+                    */
+                }
+            }
+        }
+
+        Mesh msh = new Mesh();
+        List<int> listTriangles = new List<int>();
+
+        for (int i = 0; i < listVertices.Count; i++)
+        {
+            listTriangles.Add(i);
+        }
+
+        msh.vertices = listVertices.ToArray();
+        msh.triangles = listTriangles.ToArray();
+        msh.RecalculateNormals();
+
+        GetComponent<MeshFilter>().mesh = msh;
+    }
+
+    Vector3 interpolation(Vector3 pos1, Vector3 pos2)
+    {
+        return (pos1 + pos2) / 2;
+    }
+
+
 
 
     // Update is called once per frame
