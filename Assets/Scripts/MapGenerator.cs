@@ -33,7 +33,7 @@ public class MapGenerator : MonoBehaviour
 
     public void generateMap2D()
     {
-        float[,] map =Noise.GenerateNoiseMap2D(mapWidth, mapHeight,seed, mapScale,octaves,persistance,lacunarity,new Vector2(offset.x,offset.y));
+        float[,] map = Noise.GenerateNoiseMap2D(mapWidth, mapHeight,seed, mapScale,octaves,persistance,lacunarity,new Vector2(offset.x,offset.y));
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
         display.drawNoiseMap(map);
@@ -44,6 +44,8 @@ public class MapGenerator : MonoBehaviour
         float[,,] map = Noise.GenerateNoiseMap3D(mapWidth, mapHeight, mapDeep, seed, mapScale, octaves, persistance, lacunarity, offset);
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
+        MarchingCube mc = FindObjectOfType<MarchingCube>();
+        mc.setMap(map);
         display.drawNoiseMap3D(map);
     }
 
