@@ -51,6 +51,7 @@ public class MapGenerator : MonoBehaviour
         MarchingCube mc = GetComponent<MarchingCube>();
 
         mc.setMap(map);
+<<<<<<< HEAD
         mc.debugCubes(seuil);
 
         //display.drawNoiseMap3D(map);
@@ -60,6 +61,10 @@ public class MapGenerator : MonoBehaviour
     {
         MarchingCube mc = GetComponent<MarchingCube>();
         mc.debugCubes(seuil);
+=======
+        Vector3[,,] pos = display.generatePositions3D(map);
+        display.drawNoiseMap3D(pos,map);
+>>>>>>> bb838b9a285f37efe9d98c2a50637146cb93eaf3
     }
 
     public void OnValidate()
