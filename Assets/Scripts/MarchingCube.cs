@@ -361,15 +361,27 @@ public class MarchingCube : MonoBehaviour
                         posSpheres[i, j+1, k+1]
                     };
 
+                    float[] noiseCorners =
+                    {
+                        map[i, j, k],
+                        map[i+1, j, k],
+                        map[i+1, j, k+1],
+                        map[i, j, k+1],
+                        map[i, j+1, k],
+                        map[i+1, j+1, k],
+                        map[i+1, j+1, k+1],
+                        map[i, j+1, k+1]
+                    };
+
                     int cubeIndex = 0;
-                    if (map[i, j, k] < seuil) cubeIndex |= 1;
-                    if (map[i+1, j, k] < seuil) cubeIndex |= 2;
-                    if (map[i+1, j, k+1] < seuil) cubeIndex |= 4;
-                    if (map[i, j, k+1] < seuil) cubeIndex |= 8;
-                    if (map[i, j+1, k] < seuil) cubeIndex |= 16;
-                    if (map[i+1, j+1, k] < seuil) cubeIndex |= 32;
-                    if (map[i+1, j+1, k+1] < seuil) cubeIndex |= 64;
-                    if (map[i, j+1, k+1] < seuil) cubeIndex |= 128;
+                    if (noiseCorners[0] < seuil) cubeIndex |= 1;
+                    if (noiseCorners[1] < seuil) cubeIndex |= 2;
+                    if (noiseCorners[2] < seuil) cubeIndex |= 4;
+                    if (noiseCorners[3] < seuil) cubeIndex |= 8;
+                    if (noiseCorners[4] < seuil) cubeIndex |= 16;
+                    if (noiseCorners[5] < seuil) cubeIndex |= 32;
+                    if (noiseCorners[6] < seuil) cubeIndex |= 64;
+                    if (noiseCorners[7] < seuil) cubeIndex |= 128;
 
                     Debug.Log(cubeIndex);
 
@@ -386,14 +398,14 @@ public class MarchingCube : MonoBehaviour
                             int a2 = cornerIndexAFromEdge[triTable[cubeIndex, l+2]];
                             int b2 = cornerIndexBFromEdge[triTable[cubeIndex, l+2]];
 
-                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0]));
-                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1]));
-                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2]));
+                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
 
-                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0]));
-                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2]));
-                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1]));
-                            
+                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
+
                         }
                     }
 
@@ -424,6 +436,12 @@ public class MarchingCube : MonoBehaviour
         msh.RecalculateNormals();
 
         GetComponent<MeshFilter>().mesh = msh;
+    }
+
+    Vector3 interpolation(Vector3 pos1, Vector3 pos2, float valuePos1, float valuePos2, float seuil)
+    {
+        float t = (seuil - valuePos1) / (valuePos2 - valuePos1);
+        return pos1 + t * (pos2 - pos1);
     }
 
     Vector3 interpolation(Vector3 pos1, Vector3 pos2)
