@@ -11,6 +11,7 @@ public class MapGenerator : MonoBehaviour
     public float mapScale;
     [Range(0.0f,1.0f)]
     public float seuil;
+    public int mapChunkSize;
 
     [Header("Perlin Noise Settings")]
     public int octaves;

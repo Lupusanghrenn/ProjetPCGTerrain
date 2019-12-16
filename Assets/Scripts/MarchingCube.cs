@@ -293,9 +293,9 @@ public class MarchingCube : MonoBehaviour
         7
     };
 
-    public int width;
-    public int height;
-    public int deep;
+    private int width;
+    private int height;
+    private int deep;
     public static float[,,] map;
     Vector3[,,] posSpheres;
 
@@ -374,16 +374,16 @@ public class MarchingCube : MonoBehaviour
                     };
 
                     int cubeIndex = 0;
-                    if (noiseCorners[0] < seuil) cubeIndex |= 1;
-                    if (noiseCorners[1] < seuil) cubeIndex |= 2;
-                    if (noiseCorners[2] < seuil) cubeIndex |= 4;
-                    if (noiseCorners[3] < seuil) cubeIndex |= 8;
-                    if (noiseCorners[4] < seuil) cubeIndex |= 16;
-                    if (noiseCorners[5] < seuil) cubeIndex |= 32;
-                    if (noiseCorners[6] < seuil) cubeIndex |= 64;
-                    if (noiseCorners[7] < seuil) cubeIndex |= 128;
+                    if (noiseCorners[0] > seuil) cubeIndex |= 1;
+                    if (noiseCorners[1] > seuil) cubeIndex |= 2;
+                    if (noiseCorners[2] > seuil) cubeIndex |= 4;
+                    if (noiseCorners[3] > seuil) cubeIndex |= 8;
+                    if (noiseCorners[4] > seuil) cubeIndex |= 16;
+                    if (noiseCorners[5] > seuil) cubeIndex |= 32;
+                    if (noiseCorners[6] > seuil) cubeIndex |= 64;
+                    if (noiseCorners[7] > seuil) cubeIndex |= 128;
 
-                    Debug.Log(cubeIndex);
+                    //Debug.Log(cubeIndex);
 
                     if (cubeIndex != 0 && cubeIndex!=255)
                     {
@@ -399,8 +399,9 @@ public class MarchingCube : MonoBehaviour
                             int b2 = cornerIndexBFromEdge[triTable[cubeIndex, l+2]];
 
                             listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
                             listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
+                            
 
                         }
                     }
@@ -432,13 +433,20 @@ public class MarchingCube : MonoBehaviour
         msh.triangles = listTriangles.ToArray();
         msh.RecalculateNormals();
 
+        Debug.Log(listVertices.Count);
+
         GetComponent<MeshFilter>().mesh = msh;
     }
 
     Vector3 interpolation(Vector3 pos1, Vector3 pos2, float valuePos1, float valuePos2, float seuil)
     {
-        float t = (seuil - valuePos1) / (valuePos2 - valuePos1);
-        return pos1 + t * (pos2 - pos1);
+        //return interpolation(pos1, pos2);
+        float a = valuePos1 - seuil;
+        float b = valuePos2 - seuil;
+        float bma = b - a;
+        return b / bma * pos1 + -a / bma * pos2;
+        /*float t = (seuil - valuePos1) / (valuePos2 - valuePos1);
+        return pos1 + t * (pos2 - pos1);*/
     }
 
     Vector3 interpolation(Vector3 pos1, Vector3 pos2)

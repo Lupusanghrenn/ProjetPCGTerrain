@@ -112,10 +112,10 @@ public class MapDisplay : MonoBehaviour
                 {
                     positions[x, y, z] = currentPos;
                     //texture.SetPixel(x, y, new Color(map[x, y], map[x, y], map[x, y]));
-                    /*GameObject go = Instantiate(prefab, currentPos, Quaternion.identity, spheres.transform);
+                    GameObject go = Instantiate(prefab, currentPos, Quaternion.identity, spheres.transform);
                     Material mat = new Material(matPrefab);
                     mat.color = Color.Lerp(Color.black, Color.white, map[x, y, z]);
-                    go.GetComponent<MeshRenderer>().sharedMaterial = mat;*/
+                    go.GetComponent<MeshRenderer>().sharedMaterial = mat;
                     currentPos += cubeTransform.forward;
                 }
             }
