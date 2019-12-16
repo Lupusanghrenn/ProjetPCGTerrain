@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class endlessTerrain : MonoBehaviour
 {
-    public const float maxViewDistance = 30;
+    public const float maxViewDistance = 20;
     public Transform player;
+    public MapGenerator mapGen;
+    public Material mat;
 
     public static Vector2 playerPos;
-    int chunkSize;
-    int chunksVisibleInViewDistance;
+    public int chunkSize;
+    public int chunksVisibleInViewDistance;
 
     Dictionary<Vector2, TerrainChunk> terrainChunkDictionary = new Dictionary<Vector2, TerrainChunk>();
     List<TerrainChunk> terrainChunksVisibleLastUpdate = new List<TerrainChunk>();
 
     void Start()
     {
-        chunkSize = GetComponent<MapGenerator>().mapChunkSize - 1;
+        chunkSize = 20;
         chunksVisibleInViewDistance = Mathf.RoundToInt(maxViewDistance / chunkSize);
     }
 
@@ -37,6 +39,7 @@ public class endlessTerrain : MonoBehaviour
 
         int currentChunkCoordX = Mathf.RoundToInt(playerPos.x / chunkSize);
         int currentChunkCoordY = Mathf.RoundToInt(playerPos.y / chunkSize);
+        Debug.Log("Actual Chunk : x " + (currentChunkCoordX) + " y " + (currentChunkCoordY));
 
         for (int yOffset = -chunksVisibleInViewDistance; yOffset <= chunksVisibleInViewDistance; yOffset++)
         {
@@ -54,7 +57,7 @@ public class endlessTerrain : MonoBehaviour
                 }
                 else
                 {
-                    terrainChunkDictionary.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, chunkSize, transform));
+                    terrainChunkDictionary.Add(viewedChunkCoord, new TerrainChunk(viewedChunkCoord, chunkSize, transform, mapGen, mat));
                 }
 
             }
@@ -63,21 +66,26 @@ public class endlessTerrain : MonoBehaviour
 
     public class TerrainChunk
     {
-
         GameObject meshObject;
         Vector2 position;
         Bounds bounds;
 
-
-        public TerrainChunk(Vector2 coord, int size, Transform parent)
+        public TerrainChunk(Vector2 coord, int size, Transform parent, MapGenerator mapGen, Material material)
         {
             position = coord * size;
             bounds = new Bounds(position, Vector2.one * size);
-            Vector3 positionV3 = new Vector3(position.x, 0, position.y);
+            Vector3 positionV3 = new Vector3(position.x, 10, position.y);
 
-            meshObject = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            meshObject.transform.position = positionV3;
-            meshObject.transform.localScale = Vector3.one * size / 10f;
+            mapGen.gameObject.GetComponent<MapDisplay>().cubeTransform.position = positionV3;
+            mapGen.offset = new Vector3(position.x, 0, position.y);
+
+            meshObject = new GameObject();
+            meshObject.AddComponent<MeshFilter>();
+            meshObject.AddComponent<MeshRenderer>();
+            meshObject.GetComponent<MeshRenderer>().material = material;
+            meshObject.GetComponent<MeshFilter>().mesh = mapGen.generateMap3D();
+            //meshObject.transform.position = positionV3/2;
+            //meshObject.transform.localScale = Vector3.one * size / 10f;
             meshObject.transform.parent = parent;
             SetVisible(false);
         }

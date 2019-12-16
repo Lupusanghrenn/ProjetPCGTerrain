@@ -336,12 +336,10 @@ public class MarchingCube : MonoBehaviour
         }
     }
 
-    public void debugCubes(float seuil)
+    public Mesh debugCubes(float seuil)
     {
         listVertices.Clear();
         Debug.Log(seuil);
-
-
 
         for (int i = 0; i < width - 1; i++)
         {
@@ -401,8 +399,10 @@ public class MarchingCube : MonoBehaviour
                             listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
                             listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
                             listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
-                            
 
+                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
                         }
                     }
 
@@ -436,6 +436,8 @@ public class MarchingCube : MonoBehaviour
         Debug.Log(listVertices.Count);
 
         GetComponent<MeshFilter>().mesh = msh;
+
+        return msh;
     }
 
     Vector3 interpolation(Vector3 pos1, Vector3 pos2, float valuePos1, float valuePos2, float seuil)

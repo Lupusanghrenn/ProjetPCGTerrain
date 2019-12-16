@@ -44,7 +44,7 @@ public class MapGenerator : MonoBehaviour
         display.drawNoiseMap(map);
     }
 
-    public void generateMap3D()
+    public Mesh generateMap3D()
     {
         float[,,] map = Noise.GenerateNoiseMap3D(mapWidth, mapHeight, mapDeep, seed, mapScale, octaves, persistance, lacunarity, offset);
 
@@ -52,7 +52,7 @@ public class MapGenerator : MonoBehaviour
         MarchingCube mc = GetComponent<MarchingCube>();
 
         mc.setMap(map);
-        mc.debugCubes(seuil);
+        return mc.debugCubes(seuil);
 
         //display.drawNoiseMap3D(display.generatePositions3D(map),map, seuil);
     }
