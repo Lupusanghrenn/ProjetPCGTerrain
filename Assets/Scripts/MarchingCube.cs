@@ -397,12 +397,14 @@ public class MarchingCube : MonoBehaviour
                             int b2 = cornerIndexBFromEdge[triTable[cubeIndex, l+2]];
 
                             listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
                             listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
+
 
                             listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
                             listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
+                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
+                            
                         }
                     }
 

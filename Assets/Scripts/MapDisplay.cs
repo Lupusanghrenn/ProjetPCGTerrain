@@ -92,9 +92,9 @@ public class MapDisplay : MonoBehaviour
         cubeTransform.localScale = new Vector3(width, height, deep);
         spheres.transform.position = cubeTransform.position;
         Vector3 initPos = (cubeTransform.position - cubeTransform.forward * deep / 2) - cubeTransform.right * width / 2 - cubeTransform.up * height / 2;
-        initPos += cubeTransform.right / 2;
+        /*initPos += cubeTransform.right / 2;
         initPos += cubeTransform.forward / 2;
-        initPos += cubeTransform.up / 2;
+        initPos += cubeTransform.up / 2;*/
         Vector3 currentPos = initPos;
         Debug.Log("sphere");
 
