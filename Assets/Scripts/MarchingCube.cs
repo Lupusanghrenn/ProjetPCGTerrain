@@ -435,8 +435,8 @@ public class MarchingCube : MonoBehaviour
                             }
 
                             listTriangles.Add(index1);
-                            listTriangles.Add(index3);
                             listTriangles.Add(index2);
+                            listTriangles.Add(index3);
 
                         }
                     }

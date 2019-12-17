@@ -21,6 +21,21 @@ public class CharController : MonoBehaviour
             transform.position += transform.up * speed * Time.deltaTime;
         }
 
-        transform.Rotate(new Vector3(Input.GetAxis("Mouse Y"), 0, Input.GetAxisRaw("Mouse X")) * -Time.deltaTime * speedRotate);
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.position -= transform.up * speed * Time.deltaTime;
+        }
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.Rotate(Vector3.forward, 5f);
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(Vector3.forward, -5f);
+        }
+
+        transform.Rotate(new Vector3(Input.GetAxis("Mouse Y"), 0, 0) * -Time.deltaTime * speedRotate);
     }
 }

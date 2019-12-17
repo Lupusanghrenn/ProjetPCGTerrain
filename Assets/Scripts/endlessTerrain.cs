@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class endlessTerrain : MonoBehaviour
 {
-    public const float maxViewDistance = 20;
+    public const float maxViewDistance = 40;
     public Transform player;
     public MapGenerator mapGen;
     public Material mat;
@@ -77,7 +77,8 @@ public class endlessTerrain : MonoBehaviour
             Vector3 positionV3 = new Vector3(position.x, 10, position.y);
 
             mapGen.gameObject.GetComponent<MapDisplay>().cubeTransform.position = positionV3;
-            mapGen.offset = new Vector3(position.x, 0, position.y);
+            //mapGen.offset = new Vector3(position.x/mapGen.mapScale, 0, position.y);
+            mapGen.offset = new Vector3(position.x/20, 0, position.y);
 
             meshObject = new GameObject();
             meshObject.AddComponent<MeshFilter>();
