@@ -371,14 +371,14 @@ public class MarchingCube : MonoBehaviour
                     };
 
                     int cubeIndex = 0;
-                    if (noiseCorners[0] > seuil) cubeIndex |= 1;
-                    if (noiseCorners[1] > seuil) cubeIndex |= 2;
-                    if (noiseCorners[2] > seuil) cubeIndex |= 4;
-                    if (noiseCorners[3] > seuil) cubeIndex |= 8;
-                    if (noiseCorners[4] > seuil) cubeIndex |= 16;
-                    if (noiseCorners[5] > seuil) cubeIndex |= 32;
-                    if (noiseCorners[6] > seuil) cubeIndex |= 64;
-                    if (noiseCorners[7] > seuil) cubeIndex |= 128;
+                    if (noiseCorners[0] < seuil) cubeIndex |= 1;
+                    if (noiseCorners[1] < seuil) cubeIndex |= 2;
+                    if (noiseCorners[2] < seuil) cubeIndex |= 4;
+                    if (noiseCorners[3] < seuil) cubeIndex |= 8;
+                    if (noiseCorners[4] < seuil) cubeIndex |= 16;
+                    if (noiseCorners[5] < seuil) cubeIndex |= 32;
+                    if (noiseCorners[6] < seuil) cubeIndex |= 64;
+                    if (noiseCorners[7] < seuil) cubeIndex |= 128;
 
                     //Debug.Log(cubeIndex);
 
@@ -435,8 +435,8 @@ public class MarchingCube : MonoBehaviour
                             }
 
                             listTriangles.Add(index1);
-                            listTriangles.Add(index2);
                             listTriangles.Add(index3);
+                            listTriangles.Add(index2);
 
                         }
                     }
