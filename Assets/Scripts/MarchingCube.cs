@@ -299,8 +299,6 @@ public class MarchingCube : MonoBehaviour
     public static float[,,] map;
     Vector3[,,] posSpheres;
 
-    List<Vector3> listVertices = new List<Vector3>();
-
 
     // Start is called before the first frame update
     void Start()
@@ -338,7 +336,8 @@ public class MarchingCube : MonoBehaviour
 
     public Mesh debugCubes(float seuil)
     {
-        listVertices.Clear();
+        List<Vector3> listVertices = new List<Vector3>();
+        List<int> listTriangles = new List<int>();
         Debug.Log(seuil);
 
         for (int i = 0; i < width - 1; i++)
@@ -396,40 +395,57 @@ public class MarchingCube : MonoBehaviour
                             int a2 = cornerIndexAFromEdge[triTable[cubeIndex, l+2]];
                             int b2 = cornerIndexBFromEdge[triTable[cubeIndex, l+2]];
 
-                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
+                            Vector3 v1 = interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil);
+                            int index1 = 0;
 
+                            if (listVertices.Contains(v1))
+                            {
+                                index1 = listVertices.IndexOf(v1);
+                            }
+                            else
+                            {
+                                listVertices.Add(v1);
+                                index1 = listVertices.Count - 1;
+                            }
 
-                            listVertices.Add(interpolation(cubeCorners[a0], cubeCorners[b0], noiseCorners[a0], noiseCorners[b0], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil));
-                            listVertices.Add(interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil));
-                            
+                            Vector3 v2 = interpolation(cubeCorners[a1], cubeCorners[b1], noiseCorners[a1], noiseCorners[b1], seuil);
+                            int index2 = 0;
+
+                            if (listVertices.Contains(v2))
+                            {
+                                index2 = listVertices.IndexOf(v2);
+                            }
+                            else
+                            {
+                                listVertices.Add(v2);
+                                index2 = listVertices.Count - 1;
+                            }
+
+                            Vector3 v3 = interpolation(cubeCorners[a2], cubeCorners[b2], noiseCorners[a2], noiseCorners[b2], seuil);
+                            int index3 = 0;
+
+                            if (listVertices.Contains(v3))
+                            {
+                                index3 = listVertices.IndexOf(v3);
+                            }
+                            else
+                            {
+                                listVertices.Add(v3);
+                                index3 = listVertices.Count - 1;
+                            }
+
+                            listTriangles.Add(index1);
+                            listTriangles.Add(index3);
+                            listTriangles.Add(index2);
+
                         }
                     }
-
-                    /*"(-4.5, -4.5, 144.5)" 9 4 5
-                    Debug.Log(map[i, j, k]);
-                    Debug.Log(map[i + 1, j, k]);
-                    Debug.Log(map[i, j + 1, k]);
-                    Debug.Log(map[i, j, k + 1]);
-                    Debug.Log(map[i + 1, j + 1, k]);
-                    Debug.Log(map[i + 1, j, k + 1]);    
-                    Debug.Log(map[i, j + 1, k + 1]);
-                    Debug.Log(map[i + 1, j + 1, k + 1]);
-                    */
                 }
             }
         }
 
         Mesh msh = new Mesh();
         msh.name = "Marching cube";
-        List<int> listTriangles = new List<int>();
-
-        for (int i = 0; i < listVertices.Count; i++)
-        {
-            listTriangles.Add(i);
-        }
 
         msh.vertices = listVertices.ToArray();
         msh.triangles = listTriangles.ToArray();
